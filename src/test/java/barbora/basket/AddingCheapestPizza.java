@@ -1,17 +1,15 @@
-package basket;
+package barbora.basket;
 
 import org.junit.jupiter.api.Test;
-import web.Driver;
+import barbora.base.BarboraBase;
 
 import static com.codeborne.selenide.Selenide.*;
 
-public class AddingCheapestPizza extends Driver {
+public class AddingCheapestPizza extends BarboraBase {
 
     @Test
     public void navigateToProducts() {
-        openAndAddCookie("https://pagrindinis.barbora.lt");
         sleep(10000);
         close();
-        sleep(10000);
     }
 }
