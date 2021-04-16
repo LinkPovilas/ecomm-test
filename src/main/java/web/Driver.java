@@ -2,6 +2,7 @@ package web;
 
 import com.codeborne.selenide.Configuration;
 import org.openqa.selenium.Cookie;
+import util.Config;
 
 import static com.codeborne.selenide.WebDriverRunner.*;
 import static com.codeborne.selenide.Selenide.*;
@@ -17,6 +18,9 @@ public class Driver {
     }
 
     public void webDriverSetup() {
+        if (BUILD_PROFILE_LOCALITY.equals("server")) {
+            Configuration.browserBinary = WEB_DRIVER_PATH;
+        }
         Configuration.browser = BROWSER_NAME;
         Configuration.headless = HEADLESS;
         Configuration.startMaximized = MAXIMIZED;
