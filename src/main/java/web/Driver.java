@@ -11,7 +11,7 @@ import static util.Config.*;
 
 public class Driver {
 
-    public void webDriverSetup() {
+    public void setUpWebDriver() {
         if (BUILD_PROFILE_LOCALITY.equals("server")) {
             Configuration.browserBinary = WEB_DRIVER_PATH;
         }
@@ -22,6 +22,10 @@ public class Driver {
 
     public void goTo(String url) {
         open(url);
+    }
+
+    public void navigateToUrl(String url) {
+        getWebDriver().navigate().to(url);
     }
 
     public void addCookieByUrl(String url, String cookie, String value) {

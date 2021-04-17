@@ -18,6 +18,7 @@ public class Config {
 
     public static final boolean MAXIMIZED = Boolean.parseBoolean(properties.getProperty("MAXIMIZED"));
 
-
     public static final String BUILD_PROFILE_LOCALITY = properties.getProperty("BUILD_PROFILE_LOCALITY");
+
+    public static final String BARBORA_MAIN = properties.getProperty("BARBORA_MAIN");
 }

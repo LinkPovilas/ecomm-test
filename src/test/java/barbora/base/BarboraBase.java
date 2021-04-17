@@ -5,16 +5,17 @@ import org.junit.jupiter.api.TestInstance;
 import web.Initiation;
 import util.Config;
 
+import static util.Config.BARBORA_MAIN;
+
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class BarboraBase extends Initiation {
 
-    String baseUrl = "https://barbora.lt/";
+    final String baseUrl = BARBORA_MAIN;
 
+    //ToDo fix cookie management when going to another page
     @BeforeAll
     public void initiate() {
         setUp(baseUrl);
-        click("//button[@data-county=\"vilnius\"]");
-        click("//span[@class='barbora-btn-txt'][contains(text(),'Barbora')]");
         addCookieByElementId("CybotCookiebotDialog", "CookieConsent", Config.COOKIE_CONSENT);
     }
 }

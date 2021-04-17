@@ -1,33 +1,25 @@
 package barbora.basket;
 
-import com.codeborne.selenide.Selenide;
 import com.google.gson.JsonObject;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import barbora.base.BarboraBase;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import util.CustomParsing;
+import web.Initiation;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
-public class AddingCheapestPizza extends BarboraBase {
+public class AddingItemsToList extends Initiation {
 
-    final String path = "saldytas-maistas/saldyti-kulinarijos-ir-konditerijos-gaminiai/saldytos-picos-ir-uzkandziai";
+    final String baseUrl = "https://pagrindinis.barbora.lt/saldytas-maistas/saldyti-kulinarijos-ir-konditerijos-gaminiai/saldytos-picos-ir-uzkandziai";
     final String product = "//div[@class=\"b-product--wrap clearfix b-product--js-hook   \"]";
 
-    @BeforeAll
-    public void navigateToProducts() {
-        navigateToUrl(getWebDriver().getCurrentUrl() + path);
-    }
-
     @Test
-    public void getCheapestPizza() {
-        // Select product sorting
-        Selenide.$(By.xpath("//select[@class=\"b-orderby form-control\"]")).selectOptionByValue("priceAsc");
+    public void addToList() {
+        setUp(baseUrl);
         // Get all web elements by specified xpath
         List<WebElement> elements = getWebDriver().findElements(By.xpath(product));
         // Class for convenience
@@ -56,6 +48,5 @@ public class AddingCheapestPizza extends BarboraBase {
                 System.out.println("Lowest price: " + small);
             }
         }
-
     }
 }
