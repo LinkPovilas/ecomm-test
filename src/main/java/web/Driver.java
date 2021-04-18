@@ -4,7 +4,6 @@ import com.codeborne.selenide.Configuration;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.WebDriverRunner.*;
 import static com.codeborne.selenide.Selenide.*;
 import static util.Config.*;
@@ -48,7 +47,7 @@ public class Driver {
     }
 
     public void click(String xpath) {
-        $(By.xpath(xpath)).shouldBe(visible).click();
+        $(By.xpath(xpath)).click();
     }
 
     public void acceptAlert() {
@@ -63,8 +62,7 @@ public class Driver {
         try {
             getWebDriver().getTitle();
             return true;
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }

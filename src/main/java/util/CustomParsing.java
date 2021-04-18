@@ -12,7 +12,14 @@ public class CustomParsing {
         return JsonParser.parseString(element.getAttribute(attribute)).getAsJsonObject();
     }
 
+    // ToDo fix IndexOutOfBoundsException if item is not found
     public double getMemberValueAsDouble(List<JsonObject> jsonObjects, int index, String memberName) {
-        return Double.parseDouble(jsonObjects.get(index).get(memberName).toString());
+
+        try {
+            return Double.parseDouble(jsonObjects.get(index).get(memberName).toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0.00;
     }
 }
