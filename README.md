@@ -1,3 +1,3 @@
 # ecomm-test
 
-Test automation practice project
+Test automation demo/practice project
