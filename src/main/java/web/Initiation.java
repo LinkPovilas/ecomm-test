@@ -4,7 +4,7 @@ public class Initiation extends Driver {
 
     public void setUp(String baseUrl) {
         if (!isBrowserOpen()) {
-            webDriverSetup();
+            setUpWebDriver();
             goTo(baseUrl);
         }
     }

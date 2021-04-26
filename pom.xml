@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.ecommtest</groupId>
+    <artifactId>EcommTest</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>RELEASE</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.codeborne</groupId>
+            <artifactId>selenide</artifactId>
+            <version>5.20.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.8.0-M1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- Profile configuration -->
+    <profiles>
+        <profile>
+            <id>LOCAL</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <build.profile.locality>local</build.profile.locality>
+                <trust.store/>
+            </properties>
+        </profile>
+        <profile>
+            <id>SERVER</id>
+            <properties>
+                <build.profile.locality>server</build.profile.locality>
+                <trust.store/>
+            </properties>
+        </profile>
+        <profile>
+            <id>BROWSER_CHROME</id>
+            <properties>
+                <!--
+                Specifies the build.profile.id property that must be equal than the name of
+                the directory that contains the profile specific configuration file.
+                Because the name of the directory that contains the configuration file of the
+                testing profile is test, we must set the value of the build.profile.id
+                property to test.
+                -->
+                <build.profile.web_driver>browserChrome</build.profile.web_driver>
+            </properties>
+        </profile>
+        <profile>
+            <id>BROWSER_SAFARI</id>
+            <properties>
+                <build.profile.web_driver>browserSafari</build.profile.web_driver>
+            </properties>
+        </profile>
+    </profiles>
+    <build>
+        <finalName>maven-properties-filtering</finalName>
+        <filters>
+            <!--
+            Ensures that the config.properties file is always loaded from the
+            configuration directory of the active Maven profile. 
+            -->
+            <filter>src/main/resources/profiles/${build.profile.locality}/config.properties</filter>
+            <filter>src/main/resources/profiles/${build.profile.web_driver}/config.properties</filter>
+        </filters>
+        <resources>
+            <!--
+            Placeholders that are found from the files located in the configured resource
+            directories are replaced with the property values found from the profile
+            specific configuration file.
+            -->
+            <resource>
+                <filtering>true</filtering>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-help-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>show-profiles</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>active-profiles</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
+
+</project>
