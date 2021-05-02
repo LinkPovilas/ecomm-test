@@ -18,7 +18,6 @@ public class PropertyFileReader {
             } else {
                 throw new FileNotFoundException("Property file not found.");
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }

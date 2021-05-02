@@ -1,11 +1,13 @@
 package web;
 
-public class Initiation extends Driver {
+import web.browser.Browser;
+
+public class Initiation extends Browser {
 
     public void setUp(String baseUrl) {
         if (!isBrowserOpen()) {
             setUpWebDriver();
-            goTo(baseUrl);
+            openBrowser(baseUrl);
         }
     }
 }

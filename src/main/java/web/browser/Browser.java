@@ -1,16 +1,26 @@
-package web;
+package web.browser;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
+import org.openqa.selenium.WebDriver;
+
+import java.time.Duration;
 
 import static com.codeborne.selenide.WebDriverRunner.*;
 import static com.codeborne.selenide.Selenide.*;
 import static util.Config.*;
 
-public class Driver {
+public class Browser {
 
-    public void setUpWebDriver() {
+    public static WebDriver openBrowser(String url) {
+        setUpWebDriver();
+        open(url);
+        return getWebDriver();
+    }
+
+    public static void setUpWebDriver() {
         if (BUILD_PROFILE_LOCALITY.equals("server")) {
             Configuration.browserBinary = WEB_DRIVER_PATH;
         }
@@ -19,12 +29,12 @@ public class Driver {
         Configuration.startMaximized = MAXIMIZED;
     }
 
-    public void goTo(String url) {
-        open(url);
-    }
-
     public void navigateToUrl(String url) {
         getWebDriver().navigate().to(url);
+    }
+
+    public String getTitle() {
+        return getWebDriver().getTitle();
     }
 
     public void addCookieByUrl(String url, String cookie, String value) {
@@ -47,7 +57,9 @@ public class Driver {
     }
 
     public void click(String xpath) {
-        $(By.xpath(xpath)).click();
+        $(By.xpath(xpath)).shouldBe(Condition.visible, Duration.ofSeconds(15))
+                .shouldBe(Condition.enabled, Duration.ofSeconds(15))
+                .click();
     }
 
     public void acceptAlert() {
@@ -63,6 +75,7 @@ public class Driver {
             getWebDriver().getTitle();
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }
