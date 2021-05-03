@@ -1,60 +1,87 @@
 package barbora.basket;
 
-import com.google.gson.JsonObject;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
-import web.Product;
+import org.openqa.selenium.WebElement;
 import web.browser.Browser;
-import web.objects.pages.HomePage;
-import web.objects.pages.RegionSelection;
-import web.objects.pages.ServiceSelection;
+import web.objects.elements.LoginPrompt;
+import web.objects.pages.MainPage;
+import web.objects.pages.LandingPage;
+import web.objects.pages.ProductPage;
 
-import static com.codeborne.selenide.Selenide.$;
+import static org.junit.jupiter.api.Assertions.*;
 import static web.objects.references.Region.*;
 import static web.objects.references.Service.*;
 
-public class CheapestPizzaTest extends Browser {
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+public class CheapestPizzaTest {
     private static WebDriver driver;
 
-    final RegionSelection regionSelection = new RegionSelection(driver);
-    final ServiceSelection serviceSelection = regionSelection.selectRegion(VILNIAUS);
-    final HomePage homePage = serviceSelection.selectService(BARBORA);
-    final Product product = new Product();
+    final LandingPage landingPage = new LandingPage(driver);
+    final MainPage mainPage = new MainPage(driver);
+    final ProductPage productPage = new ProductPage(driver);
+    final LoginPrompt loginPrompt = new LoginPrompt(driver);
+    static String itemName;
 
     @BeforeAll
-    public static void beforeAll() {
-        driver = openBrowser("https://www.barbora.lt");
+    public static void setup() {
+        driver = Browser.openBrowser("https://www.barbora.lt");
     }
 
     @Test
+    @Order(1)
+    public void navigateToHomePage() {
+
+        //Arrange
+        String region = VILNIAUS.getValue();
+        String service = BARBORA.getValue();
+        String pageUrl = "https://pagrindinis.barbora.lt/";
+
+        //Act
+        landingPage.selectOption(region);
+        landingPage.selectOption(service);
+
+        //Assert
+        assertTrue(mainPage.isOpen(pageUrl));
+    }
+
+    @Test
+    @Order(2)
     public void addCheapestPizza() {
 
         //Arrange
         final String href = "/saldytas-maistas/saldyti-kulinarijos-ir-konditerijos-gaminiai/saldytos-picos-ir-uzkandziai";
         final String asc = "priceAsc";
-        final String productPath = "//div[@class=\"b-product--wrap clearfix b-product--js-hook   \"]";
-        final String data = "data-b-for-cart";
-        final String productName = "pica";
-        JsonObject obj;
+        final String product = "pica ";
 
         //Act
-        homePage.closeCookieConsent();
-        homePage.goToProductPage(href);
-        homePage.selectSortingByValue(asc);
-        /** --- Work In Progress --- */
-        //ToDO Need to finish test case
-        obj = product.getCheapest(productPath, data, productName);
-
-        // Select product
-        click("//div[@data-b-item-id=" + obj.get("id").toString() + "]");
-
-        // Add to cart
-        click("//button[@class=\"c-btn c-btn--brand-primary c-btn--block c-btn--center c-btn--modifier\"]/span");
+        mainPage.closeCookieConsent();
+        mainPage.goToProductPage(href);
+        mainPage.selectSortingByValue(asc);
+        WebElement item = mainPage.findFirstItem(product);
+        itemName = item.getText();
+        productPage.openProductPage(item);
+        productPage.addToCart();
 
         //Assert
-        Assertions.assertTrue($(By.xpath("//div[@class=\"modal-content\"]")).isDisplayed());
+        assertTrue(loginPrompt.isDisplayed());
+    }
+
+    @Test
+    @Order(3)
+    public void enterCredentials() {
+
+        //Arrange
+        String email = "email";
+        String password = "pass";
+
+        //Act
+        loginPrompt.setEmailField(email);
+        loginPrompt.setPasswordFieldField(password);
+        loginPrompt.loginWithUser();
+
+        //Assert
+        assertTrue(productPage.isDisplayed());
+        assertEquals(itemName, productPage.getItemInCart().getText());
     }
 }

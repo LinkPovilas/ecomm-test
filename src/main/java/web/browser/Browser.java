@@ -25,7 +25,12 @@ public class Browser {
             Configuration.browserBinary = WEB_DRIVER_PATH;
         }
         Configuration.browser = BROWSER_NAME;
-        Configuration.headless = HEADLESS;
+        if ("chrome".equals(BROWSER_NAME)) {
+            Configuration.headless = HEADLESS;
+            // headless browser not supported in Safari.
+        } else {
+            Configuration.headless = false;
+        }
         Configuration.startMaximized = MAXIMIZED;
     }
 
