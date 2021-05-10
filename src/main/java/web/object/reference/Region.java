@@ -1,4 +1,4 @@
-package web.objects.references;
+package web.object.reference;
 
 public enum Region {
     VILNIAUS("Vilniaus"),

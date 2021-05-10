@@ -1,4 +1,4 @@
-package web.objects.elements;
+package web.object.element;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,16 +12,16 @@ public class LoginPrompt {
     protected final WebDriver driver;
 
     @FindBy(css = "[class=\"form-horizontal b-login-form\"]")
-    private WebElement loginForm;
+    public WebElement loginForm;
 
     @FindBy(id = "b-login-email")
-    private WebElement emailField;
+    public WebElement emailField;
 
     @FindBy(id = "b-login-password")
-    private WebElement passwordField;
+    public WebElement passwordField;
 
     @FindBy(css = "[class=\"btn btn-default b-login-form--login-button\"]")
-    private WebElement loginButton;
+    public WebElement loginButton;
 
     public LoginPrompt(WebDriver driver) {
         this.driver = driver;
@@ -34,14 +34,19 @@ public class LoginPrompt {
     }
 
     public void setEmailField(String email) {
-        emailField.sendKeys(email);
+        HtmlElement emailInput = new HtmlElement(emailField, emailField.getAttribute("name"));
+        emailInput.sendKeys(email);
     }
 
-    public void setPasswordFieldField(String password) {
-        passwordField.sendKeys(password);
+    public void setPasswordField(String password) {
+        HtmlElement passInput = new HtmlElement(passwordField, passwordField.getAttribute("name"));
+        passInput.sendKeys(password);
     }
 
-    public void loginWithUser() {
-        loginButton.click();
+    public void loginWithUser(String email, String password) {
+        setEmailField(email);
+        setPasswordField(password);
+        HtmlElement login = new HtmlElement(loginButton, loginButton.getText());
+        login.click();
     }
 }

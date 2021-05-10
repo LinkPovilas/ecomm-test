@@ -1,19 +1,20 @@
-package barbora.basket;
+package barbora.main;
 
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import util.CustomAssert;
 import web.browser.Browser;
-import web.objects.elements.LoginPrompt;
-import web.objects.pages.MainPage;
-import web.objects.pages.LandingPage;
-import web.objects.pages.ProductPage;
+import web.object.element.LoginPrompt;
+import web.object.page.MainPage;
+import web.object.page.LandingPage;
+import web.object.page.ProductPage;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static web.objects.references.Region.*;
-import static web.objects.references.Service.*;
+import static web.object.reference.Region.*;
+import static web.object.reference.Service.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@DisplayName("Landing page validation")
 public class CheapestPizzaTest {
     private static WebDriver driver;
 
@@ -21,6 +22,7 @@ public class CheapestPizzaTest {
     final MainPage mainPage = new MainPage(driver);
     final ProductPage productPage = new ProductPage(driver);
     final LoginPrompt loginPrompt = new LoginPrompt(driver);
+    final CustomAssert custom = new CustomAssert();
     static String itemName;
 
     @BeforeAll
@@ -30,6 +32,7 @@ public class CheapestPizzaTest {
 
     @Test
     @Order(1)
+    @DisplayName("Navigation to the homepage")
     public void navigateToHomePage() {
 
         //Arrange
@@ -42,11 +45,12 @@ public class CheapestPizzaTest {
         landingPage.selectOption(service);
 
         //Assert
-        assertTrue(mainPage.isOpen(pageUrl));
+        custom.isPageOpen(driver, pageUrl);
     }
 
     @Test
     @Order(2)
+    @DisplayName("Addition of the cheapest pizza to the shopping cart")
     public void addCheapestPizza() {
 
         //Arrange
@@ -64,24 +68,24 @@ public class CheapestPizzaTest {
         productPage.addToCart();
 
         //Assert
-        assertTrue(loginPrompt.isDisplayed());
+        custom.assertWebElementIsDisplayed(loginPrompt.loginForm);
     }
 
     @Test
     @Order(3)
+    @DisplayName("Log in with valid credentials")
     public void enterCredentials() {
 
         //Arrange
-        String email = "email";
-        String password = "pass";
+        String email = "yourEmail";
+        String password = "yourPass";
 
         //Act
-        loginPrompt.setEmailField(email);
-        loginPrompt.setPasswordFieldField(password);
-        loginPrompt.loginWithUser();
+        loginPrompt.loginWithUser(email, password);
+        productPage.isDisplayed();
 
         //Assert
-        assertTrue(productPage.isDisplayed());
-        assertEquals(itemName, productPage.getItemInCart().getText());
+        custom.assertWebElementIsDisplayed(productPage.removeAll);
+        custom.assertTextIsEqual(itemName, productPage.itemInCart.getText());
     }
 }
