@@ -1,15 +1,12 @@
-package web.objects.pages;
+package web.object.page;
 
-import com.codeborne.selenide.Selenide;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.util.List;
+import web.object.element.HtmlElement;
 
 import static com.codeborne.selenide.Selenide.$;
 
@@ -17,13 +14,13 @@ public class ProductPage {
     protected final WebDriver driver;
 
     @FindBy(css = "[class='c-btn c-btn--brand-primary c-btn--block c-btn--center c-btn--modifier']")
-    private WebElement addToCart;
+    public WebElement addToCart;
 
     @FindBy(xpath ="//*[name()='use'][contains(@*, '#trash-bin')]")
-    private WebElement removeAll;
+    public WebElement removeAll;
 
     @FindBy(xpath = "//span[@class=\"b-cart--item-title\"]/a")
-    private WebElement itemInCart;
+    public WebElement itemInCart;
 
     public ProductPage(WebDriver driver) {
         this.driver = driver;
@@ -31,19 +28,18 @@ public class ProductPage {
     }
 
     public void openProductPage(WebElement element) {
-        element.click();
+        HtmlElement product = new HtmlElement(element, element.getText());
+        product.click();
     }
 
-    public boolean isDisplayed() {
+    public void isDisplayed() {
         WebDriverWait wait = new WebDriverWait(driver, 15);
-        return wait.until($ -> $(removeAll).isDisplayed());
+        wait.until($ -> $(removeAll).isDisplayed());
     }
 
     public void addToCart() {
-        Selenide.$(By.cssSelector("[class=\"c-btn c-btn--brand-primary c-btn--block c-btn--center c-btn--modifier\"]")).click();
-    }
-
-    public WebElement getItemInCart() {
-        return itemInCart;
+        WebElement addToCart = $(By.cssSelector("[class=\"c-btn c-btn--brand-primary c-btn--block c-btn--center c-btn--modifier\"]"));
+        HtmlElement product = new HtmlElement(addToCart, addToCart.getText());
+        product.click();
     }
 }

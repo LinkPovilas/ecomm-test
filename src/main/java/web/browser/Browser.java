@@ -2,6 +2,7 @@ package web.browser;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
+import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
@@ -14,6 +15,7 @@ import static util.Config.*;
 
 public class Browser {
 
+    @NotNull
     public static WebDriver openBrowser(String url) {
         setUpWebDriver();
         open(url);
@@ -65,10 +67,6 @@ public class Browser {
         $(By.xpath(xpath)).shouldBe(Condition.visible, Duration.ofSeconds(15))
                 .shouldBe(Condition.enabled, Duration.ofSeconds(15))
                 .click();
-    }
-
-    public void acceptAlert() {
-        getWebDriver().switchTo().alert().accept();
     }
 
     public void close() {
