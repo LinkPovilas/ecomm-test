@@ -13,8 +13,7 @@ import static com.codeborne.selenide.Selenide.$;
 public class ProductPage {
     protected final WebDriver driver;
 
-    @FindBy(css = "[class='c-btn c-btn--brand-primary c-btn--block c-btn--center c-btn--modifier']")
-    public WebElement addToCart;
+    public final By addToCart = By.cssSelector("[class='c-btn c-btn--brand-primary c-btn--block c-btn--center c-btn--modifier']");
 
     @FindBy(xpath ="//*[name()='use'][contains(@*, '#trash-bin')]")
     public WebElement removeAll;
@@ -32,14 +31,13 @@ public class ProductPage {
         product.click();
     }
 
-    public void isDisplayed() {
+    public void isDisplayed(WebElement webElement) {
         WebDriverWait wait = new WebDriverWait(driver, 15);
-        wait.until($ -> $(removeAll).isDisplayed());
+        wait.until($ -> $(webElement).isDisplayed());
     }
 
     public void addToCart() {
-        WebElement addToCart = $(By.cssSelector("[class=\"c-btn c-btn--brand-primary c-btn--block c-btn--center c-btn--modifier\"]"));
-        HtmlElement product = new HtmlElement(addToCart, addToCart.getText());
+        HtmlElement product = new HtmlElement($(addToCart), $(addToCart).getText());
         product.click();
     }
 }

@@ -8,14 +8,13 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import web.browser.Browser;
 import web.object.element.HtmlElement;
 
 import static com.codeborne.selenide.Selenide.*;
 
 import java.util.List;
 
-public class MainPage extends Browser {
+public class MainPage {
     protected final WebDriver driver;
 
     @FindBy(id = "CybotCookiebotDialogBodyLevelButtonLevelOptinDeclineAll")
