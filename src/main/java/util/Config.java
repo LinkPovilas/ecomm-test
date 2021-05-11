@@ -6,6 +6,8 @@ public class Config {
 
     private static final Properties properties = new PropertyFileReader().loadPropertyFile("config.properties");
 
+    private static final Properties credentials = new PropertyFileReader().loadPropertyFile("credentials.properties");
+
     public static final String COOKIE_CONSENT = properties.getProperty("COOKIE_CONSENT");
 
     public static final String WEB_DRIVER_PATH = properties.getProperty("WEB_DRIVER_PATH");
@@ -21,4 +23,8 @@ public class Config {
     public static final String BUILD_PROFILE_LOCALITY = properties.getProperty("BUILD_PROFILE_LOCALITY");
 
     public static final String BARBORA_MAIN = properties.getProperty("BARBORA_MAIN");
+
+    public static final String EMAIL = credentials.getProperty("EMAIL");
+
+    public static final String PASSWORD = credentials.getProperty("PASSWORD");
 }

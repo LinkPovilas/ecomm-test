@@ -15,7 +15,7 @@ public class RegionServiceSelectionTest {
     private static WebDriver driver;
 
     final LandingPage landingPage = new LandingPage(driver);
-    final CustomAssert custom = new CustomAssert();
+    final CustomAssert custom = new CustomAssert(driver);
 
     @BeforeAll
     public static void setup() {
@@ -27,15 +27,12 @@ public class RegionServiceSelectionTest {
     @DisplayName("Landing page validation")
     public void navigateToLandingPage() {
 
-        //Arrange
         String titleMessage = "BARBORA internetinė parduotuvė";
         String headerMessage = "Pasirinkite apskritį, kurioje norite apsipirkti:";
         int noOfRegions = 10;
 
-        //Act
         landingPage.isPageOpen();
 
-        //Assert
         custom.assertTextIsEqual(titleMessage, landingPage.getPageTitle());
         custom.assertTextIsEqual(headerMessage, landingPage.header.getText());
         custom.assertNumberOfElementsEquals("Regions", noOfRegions, landingPage.options.size());
@@ -47,16 +44,13 @@ public class RegionServiceSelectionTest {
     @DisplayName("Region option selection")
     public void selectRegion() {
 
-        //Arrange
         String barbora = "BARBORA";
         String barboraExpress = "BARBORA EXPRESS";
         String region = VILNIAUS.getValue();
         int noOfServices = 2;
 
-        //Act
         landingPage.selectOption(region);
 
-        //Assert
         custom.assertWebElementIsDisplayed(landingPage.backButton);
         custom.assertNumberOfElementsEquals("Services", noOfServices, landingPage.options.size());
         custom.assertTextIsEqual(barbora, landingPage.options.get(0).getText());
@@ -69,14 +63,11 @@ public class RegionServiceSelectionTest {
     @DisplayName("Service option selection")
     public void selectService() {
 
-        //Arrange
         String service = BARBORA.getValue();
         String pageUrl = "https://pagrindinis.barbora.lt/";
 
-        //Act
         landingPage.selectOption(service);
 
-        //Assert
-        custom.isPageOpen(driver, pageUrl);
+        custom.isPageOpen(pageUrl);
     }
 }
